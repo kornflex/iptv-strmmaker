@@ -82,6 +82,8 @@ ScanEntries_TV() {
 # parse existing channel name - from the end of the line before the url
   vChannelName="${newLine%%,http*}"
   vChannelName="${vChannelName##*,}"
+  #clear unwanted prefix strings in title
+  vChannelName="$(echo $vChannelName | sed "s/|FR| //g")"
   vChannelName="$(echo $vChannelName)" # remove extra spaces?
 # parse season and episode
 #  vSeasonAndEpisode="${vChannelName:(-7)}" error if 99+ episodes
@@ -106,7 +108,9 @@ ScanEntries_TV() {
 }
 
 WriteSTRMFile_TV(){
- #
+ #remove special caracters
+ # vSeries="$(echo $vSeries | sed 's/[^a-zA-Z0-9\p{Arabic} ()_-]//g')"
+ vSeries="$(echo $vSeries | sed 's/[:.,\\\/|?]//g')"
  mkdir -p "$OUTPUTDIR/STRM TV/$vSeries/Season $vSeason"
  vSTRMFile="$OUTPUTDIR/STRM TV/"
  vSTRMFile+="$vSeries/Season $vSeason/$vSeries "
@@ -148,6 +152,8 @@ ScanEntries_Movies() {
 # parse existing channel name - from the end of the line before the url
   vMovieName="${newLine%%,http*}"
   vMovieName="${vMovieName##*,}"
+  #clear unwanted prefix strings in title
+  vMovieName="$(echo $vMovieName | sed "s/|FR| //g")"
   vMovieName="$(echo $vMovieName)" # remove extra spaces?
 #  vMovieName=$(echo $vMovieName | sed -e 's/[^A-Za-z0-9._- ]//g')
 # write output
