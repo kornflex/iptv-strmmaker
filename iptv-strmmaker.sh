@@ -84,7 +84,8 @@ ScanEntries_TV() {
   vChannelName="${vChannelName##*,}"
   vChannelName="$(echo $vChannelName)" # remove extra spaces?
 # parse season and episode
-  vSeasonAndEpisode="${vChannelName:(-7)}"
+#  vSeasonAndEpisode="${vChannelName:(-7)}" error if 99+ episodes
+  vSeasonAndEpisode="$(echo $vChannelName | grep -Po 'S[[:digit:]]{2,3}[[:space:]]E[[:digit:]]{2,3}')"
 # parse season
   vSeason="${vSeasonAndEpisode% *}"
   vSeason="${vSeason#*S}"
@@ -292,9 +293,9 @@ input=vodselection-tv
 cat "$input" | while read -r line
  do
 #  PrintLog "Processing $line from $input"
-  cat 6_vodentries_tv.tmp | grep -E '^.*S[[:digit:]]{2}[[:space:]]*E[[:digit:]]{2}.*$' | grep -iE "group-title=\"$line\"" | ScanEntries_TV
+  cat 6_vodentries_tv.tmp | grep -E '^.*S[[:digit:]]{2,3}[[:space:]]*E[[:digit:]]{2,3}.*$' | grep -iE "group-title=\"$line\"" | ScanEntries_TV
   # added the below line to process tv series that don't use group-title. Duplicate entries found should create/edit the same output file
-  cat 6_vodentries_tv.tmp | grep -E '^.*S[[:digit:]]{2}[[:space:]]*E[[:digit:]]{2}.*$' | grep -iE "tvg-name=\"$line\"" | ScanEntries_TV
+  cat 6_vodentries_tv.tmp | grep -E '^.*S[[:digit:]]{2,3}[[:space:]]*E[[:digit:]]{2,3}.*$' | grep -iE "tvg-name=\"$line\"" | ScanEntries_TV
 done
 
 
