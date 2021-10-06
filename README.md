@@ -2,6 +2,7 @@
 Downloads an m3u file from a http location and creates strm files from the tv series and movie entries in dedicated "STRM Movie" and "STRM TV" folders. strm files for movies are created in a folder named after each movie and episodes for TV series' are saved in numbered season folders in a parent folder named after the show. The script will also compare files that exist and ones recently processed in order to purge strl files for entries that no longer exist.
 
 Tested on ubuntu and a QNAP NAS server.
+This fork has been tested on Synology too.
 
 # Usage
 iptv-strmmaker.sh [m3u url] [output folder]
