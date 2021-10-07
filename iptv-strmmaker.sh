@@ -110,7 +110,7 @@ ScanEntries_TV() {
 WriteSTRMFile_TV(){
  #remove special caracters
  # vSeries="$(echo $vSeries | sed 's/[^a-zA-Z0-9\p{Arabic} ()_-]//g')"
- vSeries="$(echo $vSeries | sed 's/[:.,\\\/|?]//g')"
+ vSeries="$(echo $vSeries | sed 's/[:.\,\\\/|?]//g')"
  mkdir -p "$OUTPUTDIR/STRM TV/$vSeries/Season $vSeason"
  vSTRMFile="$OUTPUTDIR/STRM TV/"
  vSTRMFile+="$vSeries/Season $vSeason/$vSeries "
@@ -163,7 +163,9 @@ ScanEntries_Movies() {
 }
 
 WriteSTRMFile_Movies(){
- #
+ #remove special caracters
+ # vMovieName="$(echo $vMovieName | sed 's/[^a-zA-Z0-9\p{Arabic} ()_-]//g')"
+ vMovieName="$(echo $vMovieName | sed 's/[:.\,\\\/|?]//g')"
  mkdir -p "$OUTPUTDIR/STRM Movies/$vMovieName"
  vSTRMFile="$OUTPUTDIR/"
  vSTRMFile+="STRM Movies/$vMovieName/"
@@ -311,6 +313,7 @@ cat "$input" | while read -r line
  do
 #  PrintLog "Processing $line from $input"
   cat 6_vodentries_movies.tmp | grep -iE "tvg-name=\"$line\"" | ScanEntries_Movies
+  cat 6_vodentries_movies.tmp | grep -iE "group-title=\"$line\"" | ScanEntries_Movies
 done 
 
 # purging strm files not processed during this script run 
